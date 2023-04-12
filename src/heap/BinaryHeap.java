@@ -1,16 +1,25 @@
 package heap;
 
+import java.util.NoSuchElementException;
+
 public class BinaryHeap <T extends Comparable<T>>
 {
-    private T[] heap;
+    private final T[] heap;
     private int size;
 
+    /**
+     * Binary heap constructor
+     */
     public BinaryHeap()
     {
-        heap = (T[])new Comparable[10];
+        heap = (T[]) new Comparable[10];
         size = 0;
     }
 
+    /**
+     * Adds element to heap
+     * @param element to be added
+     */
     public void add(T element)
     {
         heap[size + 1] = element;
@@ -34,12 +43,51 @@ public class BinaryHeap <T extends Comparable<T>>
             }
         }
     }
-    private void swap(int first, int second){
+    private void swap(int first, int second)
+    {
         T temp = heap[first];
         heap[first] = heap[second];
         heap[second] = temp;
     }
-    public T remove(){
-        return null;
+    public T remove()
+    {
+        if(size == 0){
+            throw new NoSuchElementException("Heap is empty");
+        }
+        //save element to remove
+        T removed = heap[1];
+
+        //replace the root
+        heap[1] = heap[size];
+        heap[size] = null;
+        size--;
+
+        //reorder the heap, sink at root
+        sink(1);
+        return removed;
+    }
+
+    private void sink(int parentIndex)
+    {
+        // size/2 is largest index with child
+        while(parentIndex <= size/2){
+            //get children
+            int leftIndex = 2*parentIndex;
+            int rightIndex = 2*parentIndex+1;
+
+            //determine smallest child
+            int smallestChildIndex = leftIndex;
+            if(rightIndex <= size && heap[leftIndex].compareTo(heap[rightIndex]) > 0){
+                smallestChildIndex = rightIndex;
+            }
+            //is the parent and child out of order
+            if(heap[parentIndex].compareTo(heap[smallestChildIndex]) >0){
+                swap(parentIndex, smallestChildIndex);
+                parentIndex = smallestChildIndex;
+            }else{
+                break;
+            }
+
+        }
     }
 }
