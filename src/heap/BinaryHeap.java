@@ -17,7 +17,7 @@ public class BinaryHeap <T extends Comparable<T>>
     }
 
     /**
-     * Adds element to heap
+     * Adds  an element to heap
      * @param element to be added
      */
     public void add(T element)
